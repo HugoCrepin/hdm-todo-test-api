@@ -24,9 +24,25 @@ export default class TaskRepository {
       | Prisma.XOR<Prisma.TaskUpdateInput, Prisma.TaskUncheckedUpdateInput>,
   ) {
     if (!data.id) {
-      // @todo IMPLEMENT HERE USING PRISMA API
+      return this.prisma.task.create({
+        data: {
+          name: data.name as string,
+        },
+      });
     }
-
-    // @todo IMPLEMENT HERE USING PRISMA API
+  
+    if (typeof data.name === 'string') {
+      return this.prisma.task.update({
+        where: {
+          id: data.id as number,
+        },
+        data: {
+          name: data.name as string,
+        },
+      });
+    }
+  
+    throw new Error("Le nom de la tâche doit être une chaîne de caractères");
   }
+  
 }
